@@ -32,12 +32,8 @@ const adminHomePageInfoRouter = require("./routes/adminHomePageInfoRoute");
 const CustomError = require("./errorHandler/CustomError");
 const PageNotFound = require("./errorHandler/PageNotFound");
 
-// Allow CORS Policy
-// app.use(cors())
-
-// For recieiving httpOnly cookies
-app.use(cors({ credentials: true, origin: "*" }));
-
+// Allow CORS Policy with credentials and origin
+app.use(cors({ credentials: true, origin: "https://library-content-reccomendation.netlify.app" }));
 app.use(cookieParser());
 
 // Parse Form data in JSON Format
@@ -126,7 +122,7 @@ const InitiateServer = async () => {
     await ConnectDatabase(process.env.CONNECTION_URL);
     console.log("Connected to Database Successfully");
     app.listen(port, () =>
-      console.log(`server started at port ${port} . . . `)
+      console.log(`Server Started At Port ${port}`)
     );
   } catch (error) {
     console.log("ERROR IN SERVER");

@@ -64,10 +64,10 @@ const analyzeUserPreferences = async (userId, bookId) => {
 
   if (similarAuthorBooks.length <= 2) {
     let recommendationBooks = similarAuthorBooks.concat(similarCategoryBooks)
-    recommendationBooks = recommendationBooks.slice(0, 4)
+    recommendationBooks = recommendationBooks.slice(0, 8)
 
     // If we have less than 4 books to recommend than we recommend books based on language
-    if (recommendationBooks.length < 4) {
+    if (recommendationBooks.length < 8) {
       // This function handles if recommended books are less than 4
       let updatedBooks = similarLanguageBooks.filter((filter_para) => {
         // exclude same authors to control repeatation
@@ -84,14 +84,14 @@ const analyzeUserPreferences = async (userId, bookId) => {
 
         return true
       })
-      recommendationBooks = recommendationBooks.concat(updatedBooks).slice(0, 4)
+      recommendationBooks = recommendationBooks.concat(updatedBooks).slice(0, 8)
       return recommendationBooks
     }
   }
 
-  const newAuthorBooks = similarAuthorBooks.slice(0, 2)
+  const newAuthorBooks = similarAuthorBooks.slice(0,4)
   let recommendationBooks = newAuthorBooks.concat(similarCategoryBooks)
-  recommendationBooks = recommendationBooks.slice(0, 4)
+  recommendationBooks = recommendationBooks.slice(0, 8)
 
   return recommendationBooks
 }
@@ -99,8 +99,8 @@ const analyzeUserPreferences = async (userId, bookId) => {
 // API TESTING THE ALGORITHM
 const algoTest = async (req, res) => {
   const result = await analyzeUserPreferences(
-    '649179774afae22ac6166b6e', //user ko ID
-    '64967c201faf3efe0d583f2e' //last purchase BookID
+    '67c5fcf27356eba0657e19cb', //user ID
+    '6760095dde56be5d97402b5c' //last purchase BookID
   )
 
   // Algo testing on showing BookTitle and Category for ease
@@ -118,24 +118,3 @@ const algoTest = async (req, res) => {
 }
 
 module.exports = { analyzeUserPreferences, algoTest }
-
-// query to find authors that has more than 2books in database
-// BooksModel.aggregate([
-//   {
-//     $group: {
-//       _id: '$author',
-//       count: { $sum: 1 },
-//     },
-//   },
-//   {
-//     $match: {
-//       count: { $gt: 1 },
-//     },
-//   },
-// ])
-//   .then((authorsWithMoreThan2Books) => {
-//     console.log(authorsWithMoreThan2Books)
-//   })
-//   .catch((error) => {
-//     console.error(error)
-//   })
